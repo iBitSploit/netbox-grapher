@@ -10,7 +10,8 @@ Currently, two official plugins are available:
 ## Live Demo
 
 It currently is in a kind of a state where you do logins with...a token, I'm working on fixing that, also the fact that the whole project is just a single file
-You can try it live on netlify https://netbox-grapher.netlify.app/
+
+**You can try it live on netlify https://netbox-grapher.netlify.app/**
 
 ## React Compiler
 
