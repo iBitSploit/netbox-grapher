@@ -127,7 +127,7 @@ function ConnectionSetup({ initial, onConnect, error, connecting }) {
     </div>
     <div>
     <div style={{ fontSize: 16, fontWeight: 600, color: C.textPrimary, letterSpacing: -0.2 }}>Infrastructure Map</div>
-    <div style={{ fontSize: 12.5, color: C.textDim }}>Live from NetBox</div>
+    <div style={{ fontSize: 12.5, color: C.textDim }}><a href="https://github.com/iBitSploit/netbox-grapher/">Github Repo</></div>
     </div>
     </div>
     <div style={{ background: C.panel, border: `1px solid ${C.border}`, borderRadius: 10, padding: 24 }}>
