@@ -1,11 +1,6 @@
-# React + Vite
+# NetBox Grapher
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+A browser-based infrastructure, topology, rack, and IPAM view for NetBox.
 
 ## Live Demo
 
@@ -13,10 +8,43 @@ It currently is in a kind of a state where you do logins with...a token, I'm wor
 
 **You can try it live on netlify https://netbox-grapher.netlify.app/**
 
-## React Compiler
+## Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm ci
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Copy `.env.example` to `.env` to configure defaults for a deployment. `VITE_*` values are compiled into the browser bundle, so never put a production secret in `VITE_NETBOX_TOKEN`. Users can enter their token in the connection screen instead.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Important settings include `VITE_NETBOX_URL`, `VITE_DEFAULT_VIEW`, `VITE_REFRESH_INTERVAL_MS`, `VITE_ENABLE_IP_GRAPH`, `VITE_ENABLE_CIRCUITS`, and `VITE_STORAGE_KEY`.
+
+The app connects directly from the browser to NetBox. The NetBox API must allow the app origin through CORS, and the token needs read access to DCIM, IPAM, and Circuits.
+
+## Validation
+
+```bash
+npm run lint
+npm run build
+```
+
+## Production container
+
+The image uses a Node build stage and an Nginx runtime stage:
+
+```bash
+docker compose up --build -d
+```
+
+Set `COMPOSE_PORT` in `.env` to change the host port, then open `http://localhost:${COMPOSE_PORT}`. The container exposes `/healthz` and includes an HTTP health check.
+
+## Structure
+
+- `src/App.jsx`: application state, data loading, selection, and view composition.
+- `src/lib/netboxApi.js`: cached NetBox requests and pagination.
+- `src/features/connection`: NetBox connection form.
+- `src/features/navigation`: site and rack navigation.
+- `src/features/racks`: rack elevation view.
+- `src/features/graphs`: topology and IPAM graph views.
+- `src/features/details`: device and circuit detail panels.
+- `src/app`: shared theme, UI primitives, and global styles.

@@ -1,0 +1,25 @@
+services:
+  netbox-grapher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_APP_NAME: ${VITE_APP_NAME:-Infrastructure Map}
+        VITE_REPOSITORY_URL: ${VITE_REPOSITORY_URL:-}
+        VITE_NETBOX_URL: ${VITE_NETBOX_URL:-}
+        VITE_NETBOX_TOKEN: ${VITE_NETBOX_TOKEN:-}
+        VITE_NETBOX_API_PREFIX: ${VITE_NETBOX_API_PREFIX:-api}
+        VITE_STORAGE_KEY: ${VITE_STORAGE_KEY:-netbox-config}
+        VITE_DEFAULT_VIEW: ${VITE_DEFAULT_VIEW:-racks}
+        VITE_AUTO_REFRESH: ${VITE_AUTO_REFRESH:-false}
+        VITE_REFRESH_INTERVAL_MS: ${VITE_REFRESH_INTERVAL_MS:-30000}
+        VITE_ENABLE_IP_GRAPH: ${VITE_ENABLE_IP_GRAPH:-true}
+        VITE_ENABLE_CIRCUITS: ${VITE_ENABLE_CIRCUITS:-true}
+    ports:
+      - "${COMPOSE_PORT:-8080}:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-quiet", "--tries=1", "--spider", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
